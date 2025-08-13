@@ -36,5 +36,12 @@
                 referencedColumnNames="id"
                 onDelete="RESTRICT"
                 constraintName="fk_event_hall"/>
+
+        <createIndex tableName="event" indexName="idx_event_hall">
+            <column name="hall_id"/>
+        </createIndex>
+        <createIndex tableName="event" indexName="idx_event_start_at">
+            <column name="start_at"/>
+        </createIndex>
     </changeSet>
 </databaseChangeLog>

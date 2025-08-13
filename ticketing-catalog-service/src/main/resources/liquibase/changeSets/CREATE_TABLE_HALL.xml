@@ -27,5 +27,11 @@
                 onDelete="RESTRICT"
                 constraintName="fk_hall_venue"/>
 
+        <addUniqueConstraint tableName="hall" columnNames="venue_id, name" constraintName="uk_hall_venue_name"/>
+
+        <createIndex tableName="hall" indexName="idx_hall_venue">
+            <column name="venue_id"/>
+        </createIndex>
+
     </changeSet>
 </databaseChangeLog>

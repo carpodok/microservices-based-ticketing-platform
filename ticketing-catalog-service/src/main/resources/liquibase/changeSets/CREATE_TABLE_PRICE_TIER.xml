@@ -33,5 +33,11 @@
                 onDelete="RESTRICT"
                 constraintName="fk_price_tier_event"/>
 
+        <addUniqueConstraint tableName="price_tier" columnNames="event_id, name" constraintName="uk_price_tier_event_name"/>
+
+        <createIndex tableName="price_tier" indexName="idx_price_tier_event">
+            <column name="event_id"/>
+        </createIndex>
+
     </changeSet>
 </databaseChangeLog>

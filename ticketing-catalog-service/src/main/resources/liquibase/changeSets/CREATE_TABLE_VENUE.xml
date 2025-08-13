@@ -19,5 +19,11 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+
+        <addUniqueConstraint tableName="venue" columnNames="name, city" constraintName="uk_venue_name_city"/>
+
+        <createIndex tableName="venue" indexName="idx_venue_city">
+            <column name="city"/>
+        </createIndex>
     </changeSet>
 </databaseChangeLog>
