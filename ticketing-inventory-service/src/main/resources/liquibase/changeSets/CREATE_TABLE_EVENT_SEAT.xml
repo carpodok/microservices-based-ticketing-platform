@@ -30,5 +30,10 @@
         <addUniqueConstraint tableName="event_seat"
                              columnNames="event_id, seat_label"
                              constraintName="uk_event_seat_unique"/>
+
+        <createIndex tableName="event_seat"
+                     indexName="idx_event_seat_event">
+            <column name="event_id"/>
+        </createIndex>
     </changeSet>
 </databaseChangeLog>
