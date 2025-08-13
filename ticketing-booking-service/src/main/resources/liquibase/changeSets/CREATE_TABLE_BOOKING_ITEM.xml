@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+     http://www.liquibase.org/xml/ns/dbchangelog
+     http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="create-booking-item" author="atc">
+        <createTable tableName="booking_item">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="booking_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="seat_label" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="tier_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price_at_booking" type="NUMERIC(12,2)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="booking_item"
+                baseColumnNames="booking_id"
+                referencedTableName="booking"
+                referencedColumnNames="id"
+                onDelete="CASCADE"
+                constraintName="fk_booking_item_booking"/>
+
+
+        <addUniqueConstraint tableName="booking_item"
+                             columnNames="booking_id, seat_label"
+                             constraintName="uk_booking_item_unique_seat"/>
+
+        <createIndex tableName="booking_item" indexName="idx_booking_item_booking">
+            <column name="booking_id"/>
+        </createIndex>
+
+    </changeSet>
+</databaseChangeLog>
