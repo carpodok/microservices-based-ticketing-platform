@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+     http://www.liquibase.org/xml/ns/dbchangelog
+     http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="create-seat-lock" author="atc">
+        <createTable tableName="seat_lock">
+            <column name="id"            type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="event_id"       type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="seat_label"     type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="locked_until"   type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="booking_ref"    type="VARCHAR(100)"/>
+            <column name="locked_by_user" type="BIGINT"/>
+        </createTable>
+
+        <!-- prevent multiple locks on the same seat -->
+        <addUniqueConstraint tableName="seat_lock"
+                             columnNames="event_id, seat_label"
+                             constraintName="uk_seat_lock_event_seat"/>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+     http://www.liquibase.org/xml/ns/dbchangelog
+     http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <!-- Tables -->
+    <include file="changeSets/CREATE_TABLE_EVENT_SEAT.xml" relativeToChangelogFile="true"/>
+    <include file="changeSets/CREATE_TABLE_SEAT_LOCK.xml" relativeToChangelogFile="true"/>
+
+
+    <!-- Init Data -->
+    <include file="initData/INITDATA_EVENT_SEAT.sql" relativeToChangelogFile="true"/>
+    <include file="initData/INITDATA_SEAT_LOCK.sql" relativeToChangelogFile="true"/>
+
+</databaseChangeLog>
