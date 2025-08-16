@@ -34,8 +34,9 @@ public class BookingService {
         booking.setTotalAmount(total);
         booking = bookingRepository.save(booking);
 
+        Booking finalBooking = booking;
         List<BookingItem> items = request.getItems() == null ? List.of() : request.getItems().stream()
-                .map(i -> bookingMapper.toEntity(booking, i))
+                .map(i -> bookingMapper.toEntity(finalBooking, i))
                 .map(bookingItemRepository::save)
                 .collect(Collectors.toList());
 
