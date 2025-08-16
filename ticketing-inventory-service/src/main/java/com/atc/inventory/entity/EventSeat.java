@@ -1,11 +1,7 @@
 package com.atc.inventory.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(
@@ -15,7 +11,8 @@ import lombok.Setter;
                 columnNames = {"event_id", "seat_label"}
         )
 )
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
+@Data
+@NoArgsConstructor @AllArgsConstructor @Builder
 public class EventSeat {
 
     @Id
