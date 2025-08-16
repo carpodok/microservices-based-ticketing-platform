@@ -25,7 +25,7 @@ public class EventService {
     public Page<EventDto> getAllEvents(Optional<String> city, Optional<OffsetDateTime> from, Optional<OffsetDateTime> to, Pageable pageable) {
         if (city.isPresent() && from.isPresent() && to.isPresent()) {
             return eventDao
-                    .findByStartAtBetweenAndHall_Venue_CityIgnoreCase(from.get(), to.get(), city.get(), pageable)
+                    .findByStartAtBetweenAndHallVenueCityIgnoreCase(from.get(), to.get(), city.get(), pageable)
                     .map(eventMapper::toDto);
         }
         return eventDao.findAll(pageable).map(eventMapper::toDto);
