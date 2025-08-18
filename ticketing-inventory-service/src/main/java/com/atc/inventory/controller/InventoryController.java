@@ -2,7 +2,7 @@ package com.atc.inventory.controller;
 
 import com.atc.inventory.dto.SeatActionRequest;
 import com.atc.inventory.dto.SeatDto;
-import com.atc.inventory.dto.SeatLockRequest;
+import com.atc.shared.SeatLockRequest;
 import com.atc.inventory.mapper.SeatMapper;
 import com.atc.inventory.service.SeatService;
 import io.swagger.v3.oas.annotations.Operation;
