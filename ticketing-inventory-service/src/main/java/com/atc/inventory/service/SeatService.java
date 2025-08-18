@@ -1,7 +1,7 @@
 package com.atc.inventory.service;
 
 import com.atc.inventory.dto.SeatActionRequest;
-import com.atc.inventory.dto.SeatLockRequest;
+import com.atc.shared.SeatLockRequest;
 import com.atc.inventory.entity.EventSeat;
 import com.atc.inventory.entity.SeatLock;
 import com.atc.inventory.entity.SeatState;

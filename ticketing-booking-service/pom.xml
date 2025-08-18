@@ -24,12 +24,12 @@
 		<lombok.version>1.18.38</lombok.version>
 	</properties>
 
-	<dependencies>
-		<!-- Spring Boot starters -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
+        <dependencies>
+                <!-- Spring Boot starters -->
+                <dependency>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-actuator</artifactId>
+                </dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -67,11 +67,23 @@
 			<optional>true</optional>
 		</dependency>
 
-		<dependency>
-			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-			<version>2.3.0</version>
-		</dependency>
+                <dependency>
+                        <groupId>org.springdoc</groupId>
+                        <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                        <version>2.3.0</version>
+                </dependency>
+
+                <dependency>
+                        <groupId>com.atc</groupId>
+                        <artifactId>ticketing-shared-lib</artifactId>
+                        <version>0.0.1-SNAPSHOT</version>
+                </dependency>
+
+                <dependency>
+                        <groupId>net.devh</groupId>
+                        <artifactId>grpc-client-spring-boot-starter</artifactId>
+                        <version>2.15.0.RELEASE</version>
+                </dependency>
 
 		<!-- Tests -->
 		<dependency>
