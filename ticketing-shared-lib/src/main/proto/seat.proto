@@ -6,6 +6,8 @@ option java_outer_classname = "SeatServiceProto";
 
 service SeatService {
   rpc LockSeats (SeatLockRequest) returns (SeatLockResponse);
+  rpc ReleaseSeats (SeatActionRequest) returns (SeatLockResponse);
+  rpc SellSeats (SeatActionRequest) returns (SeatLockResponse);
 }
 
 message SeatLockRequest {
@@ -14,6 +16,11 @@ message SeatLockRequest {
   int64 lock_duration_seconds = 3;
   string booking_ref = 4;
   int64 locked_by_user = 5;
+}
+
+message SeatActionRequest {
+  int64 event_id = 1;
+  repeated string seat_labels = 2;
 }
 
 message SeatLockResponse {
