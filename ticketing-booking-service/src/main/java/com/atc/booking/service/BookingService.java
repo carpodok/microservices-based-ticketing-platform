@@ -7,7 +7,9 @@ import com.atc.booking.entity.BookingStatus;
 import com.atc.booking.mapper.BookingMapper;
 import com.atc.booking.repository.BookingItemRepository;
 import com.atc.booking.repository.BookingRepository;
+import com.atc.shared.grpc.SeatServiceGrpc;
 import lombok.RequiredArgsConstructor;
+import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +24,9 @@ public class BookingService {
     private final BookingRepository bookingRepository;
     private final BookingItemRepository bookingItemRepository;
     private final BookingMapper bookingMapper;
+
+    @GrpcClient("inventory-service")
+    private SeatServiceGrpc.SeatServiceBlockingStub seatStub;
 
     @Transactional
     public BookingDto startBooking(BookingDto request) {
@@ -40,7 +45,15 @@ public class BookingService {
                 .map(bookingItemRepository::save)
                 .collect(Collectors.toList());
 
-        // TODO: invoke inventory service via gRPC to lock seats
+        com.atc.shared.grpc.SeatLockRequest.Builder lockReq = com.atc.shared.grpc.SeatLockRequest.newBuilder()
+                .setEventId(booking.getEventId())
+                .setLockDurationSeconds(300)
+                .setBookingRef(String.valueOf(booking.getId()))
+                .setLockedByUser(booking.getUserId());
+        for (BookingItem item : items) {
+            lockReq.addSeatLabels(item.getSeatLabel());
+        }
+        seatStub.lockSeats(lockReq.build());
 
         return bookingMapper.toDto(booking, items);
     }

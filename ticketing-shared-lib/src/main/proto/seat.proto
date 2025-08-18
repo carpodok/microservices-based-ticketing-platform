@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.atc.shared.grpc";
+option java_outer_classname = "SeatServiceProto";
+
+service SeatService {
+  rpc LockSeats (SeatLockRequest) returns (SeatLockResponse);
+}
+
+message SeatLockRequest {
+  int64 event_id = 1;
+  repeated string seat_labels = 2;
+  int64 lock_duration_seconds = 3;
+  string booking_ref = 4;
+  int64 locked_by_user = 5;
+}
+
+message SeatLockResponse {
+  repeated string seat_labels = 1;
+}
