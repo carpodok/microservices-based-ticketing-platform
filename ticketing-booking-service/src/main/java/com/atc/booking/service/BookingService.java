@@ -8,6 +8,7 @@ import com.atc.booking.mapper.BookingMapper;
 import com.atc.booking.repository.BookingItemRepository;
 import com.atc.booking.repository.BookingRepository;
 import com.atc.shared.grpc.SeatServiceGrpc;
+import io.grpc.StatusRuntimeException;
 import lombok.RequiredArgsConstructor;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.stereotype.Service;
@@ -53,7 +54,11 @@ public class BookingService {
         for (BookingItem item : items) {
             lockReq.addSeatLabels(item.getSeatLabel());
         }
-        seatStub.lockSeats(lockReq.build());
+        try {
+            seatStub.lockSeats(lockReq.build());
+        } catch (StatusRuntimeException e) {
+            throw new IllegalStateException("Failed to lock seats: " + e.getStatus().getDescription(), e);
+        }
 
         return bookingMapper.toDto(booking, items);
     }
@@ -69,7 +74,11 @@ public class BookingService {
         for (BookingItem item : items) {
             sellReq.addSeatLabels(item.getSeatLabel());
         }
-        seatStub.sellSeats(sellReq.build());
+        try {
+            seatStub.sellSeats(sellReq.build());
+        } catch (StatusRuntimeException e) {
+            throw new IllegalStateException("Failed to confirm seats: " + e.getStatus().getDescription(), e);
+        }
 
         booking.setStatus(BookingStatus.CONFIRMED);
         booking = bookingRepository.save(booking);
@@ -87,7 +96,11 @@ public class BookingService {
         for (BookingItem item : items) {
             releaseReq.addSeatLabels(item.getSeatLabel());
         }
-        seatStub.releaseSeats(releaseReq.build());
+        try {
+            seatStub.releaseSeats(releaseReq.build());
+        } catch (StatusRuntimeException e) {
+            throw new IllegalStateException("Failed to release seats: " + e.getStatus().getDescription(), e);
+        }
 
         booking.setStatus(BookingStatus.CANCELLED);
         booking = bookingRepository.save(booking);
