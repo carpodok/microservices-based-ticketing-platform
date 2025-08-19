@@ -4,6 +4,7 @@ This project demonstrates a ticketing system built with Spring Boot microservice
 
 ## Architecture & Workflow
 - **Gateway service** routes `/api/catalog/**`, `/api/inventory/**`, and `/api/booking/**` to the respective services.
+- **Auth service** registers users and issues JWT tokens for authentication.
 - **Catalog service** stores events, venues, halls, and price tiers.
 - **Inventory service** manages event seats and supports listing, locking, releasing, and selling seats.
 - **Booking service** orchestrates bookings and calls the inventory service over gRPC to lock or finalize seats.
@@ -32,6 +33,7 @@ Typical flow:
    cd ticketing-catalog-service && ./mvnw spring-boot:run
    cd ticketing-inventory-service && ./mvnw spring-boot:run
    cd ticketing-booking-service && ./mvnw spring-boot:run
+   cd ticketing-auth-service && ./mvnw spring-boot:run
    cd ticketing-gateway-service && ./mvnw spring-boot:run
    ```
 6. **Access via gateway**: `http://localhost:8080/api/...`
