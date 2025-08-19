@@ -1,5 +1,6 @@
 package com.atc.inventory.grpc;
 
+import com.atc.inventory.dto.SeatActionRequest;
 import com.atc.shared.SeatLockRequest;
 import com.atc.inventory.entity.EventSeat;
 import com.atc.inventory.service.SeatService;
@@ -28,6 +29,38 @@ public class SeatGrpcService extends SeatServiceGrpc.SeatServiceImplBase {
         dto.setLockedByUser(request.getLockedByUser());
 
         List<EventSeat> seats = seatService.lockSeats(dto);
+        SeatLockResponse.Builder builder = SeatLockResponse.newBuilder();
+        for (EventSeat seat : seats) {
+            builder.addSeatLabels(seat.getSeatLabel());
+        }
+        responseObserver.onNext(builder.build());
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void releaseSeats(com.atc.shared.grpc.SeatActionRequest request,
+                             StreamObserver<SeatLockResponse> responseObserver) {
+        SeatActionRequest dto = new SeatActionRequest();
+        dto.setEventId(request.getEventId());
+        dto.setSeatLabels(request.getSeatLabelsList());
+
+        List<EventSeat> seats = seatService.releaseSeats(dto);
+        SeatLockResponse.Builder builder = SeatLockResponse.newBuilder();
+        for (EventSeat seat : seats) {
+            builder.addSeatLabels(seat.getSeatLabel());
+        }
+        responseObserver.onNext(builder.build());
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void sellSeats(com.atc.shared.grpc.SeatActionRequest request,
+                          StreamObserver<SeatLockResponse> responseObserver) {
+        SeatActionRequest dto = new SeatActionRequest();
+        dto.setEventId(request.getEventId());
+        dto.setSeatLabels(request.getSeatLabelsList());
+
+        List<EventSeat> seats = seatService.sellSeats(dto);
         SeatLockResponse.Builder builder = SeatLockResponse.newBuilder();
         for (EventSeat seat : seats) {
             builder.addSeatLabels(seat.getSeatLabel());
