@@ -1,0 +1,176 @@
+{
+  "info": {
+    "name": "Ticketing Platform API",
+    "description": "Collection for testing the ticketing platform microservices via the API gateway.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "gateway_base_url", "value": "http://localhost:8080/api", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Catalog",
+      "item": [
+        {
+          "name": "Get All Events",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{gateway_base_url}}/catalog/events",
+              "host": ["{{gateway_base_url}}"],
+              "path": ["catalog","events"],
+              "query": [
+                {"key": "city", "value": ""},
+                {"key": "from", "value": ""},
+                {"key": "to", "value": ""},
+                {"key": "page", "value": ""},
+                {"key": "size", "value": ""}
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Event By Id",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{gateway_base_url}}/catalog/events/1",
+              "host": ["{{gateway_base_url}}"],
+              "path": ["catalog","events","1"]
+            }
+          }
+        },
+        {
+          "name": "Get Venues",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{gateway_base_url}}/catalog/venues",
+              "host": ["{{gateway_base_url}}"],
+              "path": ["catalog","venues"]
+            }
+          }
+        },
+        {
+          "name": "Get Venue Halls",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{gateway_base_url}}/catalog/venues/1/halls",
+              "host": ["{{gateway_base_url}}"],
+              "path": ["catalog","venues","1","halls"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Inventory",
+      "item": [
+        {
+          "name": "List Seats",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{gateway_base_url}}/inventory/seats?eventId=1",
+              "host": ["{{gateway_base_url}}"],
+              "path": ["inventory","seats"],
+              "query": [ {"key": "eventId", "value": "1"} ]
+            }
+          }
+        },
+        {
+          "name": "Lock Seats",
+          "request": {
+            "method": "POST",
+            "header": [ {"key": "Content-Type", "value": "application/json"} ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"eventId\": 1,\n  \"seatLabels\": [\"A1\", \"A2\"],\n  \"lockDurationSeconds\": 300,\n  \"bookingRef\": \"BOOK123\",\n  \"lockedByUser\": 1\n}"
+            },
+            "url": {
+              "raw": "{{gateway_base_url}}/inventory/seats/lock",
+              "host": ["{{gateway_base_url}}"],
+              "path": ["inventory","seats","lock"]
+            }
+          }
+        },
+        {
+          "name": "Release Seats",
+          "request": {
+            "method": "POST",
+            "header": [ {"key": "Content-Type", "value": "application/json"} ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"eventId\": 1,\n  \"seatLabels\": [\"A1\", \"A2\"]\n}"
+            },
+            "url": {
+              "raw": "{{gateway_base_url}}/inventory/seats/release",
+              "host": ["{{gateway_base_url}}"],
+              "path": ["inventory","seats","release"]
+            }
+          }
+        },
+        {
+          "name": "Sell Seats",
+          "request": {
+            "method": "POST",
+            "header": [ {"key": "Content-Type", "value": "application/json"} ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"eventId\": 1,\n  \"seatLabels\": [\"A1\", \"A2\"]\n}"
+            },
+            "url": {
+              "raw": "{{gateway_base_url}}/inventory/seats/sell",
+              "host": ["{{gateway_base_url}}"],
+              "path": ["inventory","seats","sell"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Booking",
+      "item": [
+        {
+          "name": "Start Booking",
+          "request": {
+            "method": "POST",
+            "header": [ {"key": "Content-Type", "value": "application/json"} ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 1,\n  \"eventId\": 1,\n  \"currency\": \"USD\",\n  \"items\": [\n    {\n      \"seatLabel\": \"A1\",\n      \"tierId\": 1,\n      \"priceAtBooking\": 100.0\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{gateway_base_url}}/booking",
+              "host": ["{{gateway_base_url}}"],
+              "path": ["booking"]
+            }
+          }
+        },
+        {
+          "name": "Confirm Booking",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{gateway_base_url}}/booking/1/confirm",
+              "host": ["{{gateway_base_url}}"],
+              "path": ["booking","1","confirm"]
+            }
+          }
+        },
+        {
+          "name": "Cancel Booking",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{gateway_base_url}}/booking/1/cancel",
+              "host": ["{{gateway_base_url}}"],
+              "path": ["booking","1","cancel"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
