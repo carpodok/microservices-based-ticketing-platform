@@ -64,7 +64,12 @@ public class BookingService {
                 .orElseThrow(() -> new IllegalArgumentException("Booking not found"));
         List<BookingItem> items = bookingItemRepository.findByBookingId(booking.getId());
 
-        // TODO: invoke inventory service via gRPC to mark seats as sold
+        com.atc.shared.grpc.SeatActionRequest.Builder sellReq = com.atc.shared.grpc.SeatActionRequest.newBuilder()
+                .setEventId(booking.getEventId());
+        for (BookingItem item : items) {
+            sellReq.addSeatLabels(item.getSeatLabel());
+        }
+        seatStub.sellSeats(sellReq.build());
 
         booking.setStatus(BookingStatus.CONFIRMED);
         booking = bookingRepository.save(booking);
@@ -77,7 +82,12 @@ public class BookingService {
                 .orElseThrow(() -> new IllegalArgumentException("Booking not found"));
         List<BookingItem> items = bookingItemRepository.findByBookingId(booking.getId());
 
-        // TODO: invoke inventory service via gRPC to release locked seats
+        com.atc.shared.grpc.SeatActionRequest.Builder releaseReq = com.atc.shared.grpc.SeatActionRequest.newBuilder()
+                .setEventId(booking.getEventId());
+        for (BookingItem item : items) {
+            releaseReq.addSeatLabels(item.getSeatLabel());
+        }
+        seatStub.releaseSeats(releaseReq.build());
 
         booking.setStatus(BookingStatus.CANCELLED);
         booking = bookingRepository.save(booking);
