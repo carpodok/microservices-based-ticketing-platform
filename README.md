@@ -55,3 +55,16 @@ Typical flow:
    ```
 6. **Access via gateway**: `http://localhost:8080/api/...`
 
+## JWT Secret Configuration
+
+All services use a shared HMAC secret to sign and validate JWT tokens. The auth service signs tokens while the gateway and downstream services re-validate them using the same secret.
+
+Configure the secret via the `JWT_SECRET` environment variable or the `jwt.secret` property in each service's `application.properties`. **The value must be identical across all services** to ensure validation succeeds.
+
+### Rotating the secret
+
+1. Provide a new value for `JWT_SECRET` and redeploy all services so they can validate tokens signed with the new secret.
+2. Restart the auth service last to begin issuing tokens with the new secret.
+3. After previously issued tokens expire, remove the old secret value from your configuration.
+
+
