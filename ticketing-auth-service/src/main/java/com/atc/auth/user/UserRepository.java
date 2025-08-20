@@ -1,23 +1,9 @@
 package com.atc.auth.user;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.Optional;
 
-@Repository
-public class UserRepository {
-    private final Map<String, User> users = new ConcurrentHashMap<>();
-    private final AtomicLong idSequence = new AtomicLong();
-
-    public User save(User user) {
-        user.setId(idSequence.incrementAndGet());
-        users.put(user.getUsername(), user);
-        return user;
-    }
-
-    public User findByUsername(String username) {
-        return users.get(username);
-    }
+public interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByUsername(String username);
 }
