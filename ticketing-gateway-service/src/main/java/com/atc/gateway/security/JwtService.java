@@ -10,11 +10,6 @@ import org.springframework.stereotype.Service;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 
-/**
- * Simple utility for parsing and validating JWT tokens.
- * The same signing key should be shared across services so that
- * each microservice can re-validate tokens received from the gateway.
- */
 @Service
 public class JwtService {
 

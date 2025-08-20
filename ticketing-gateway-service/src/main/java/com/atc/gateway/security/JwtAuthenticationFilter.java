@@ -12,12 +12,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-/**
- * Gateway-level authentication filter.
- * Validates JWT tokens for incoming API requests and performs coarse authorization
- * by blocking unauthenticated access to `/api/**` endpoints, with the exception of
- * authentication endpoints.
- */
+
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
