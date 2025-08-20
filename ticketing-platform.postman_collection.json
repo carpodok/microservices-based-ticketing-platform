@@ -12,6 +12,24 @@
     {
       "name": "Auth",
       "item": [
+                {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\\n  \\\"username\\\": \\\"newuser\\\",\\n  \\\"password\\\": \\\"password\\\"\\n}"
+            },
+            "url": {
+              "raw": "{{gateway_base_url}}/auth/register",
+              "host": ["{{gateway_base_url}}"],
+              "path": ["auth","register"]
+            }
+          }
+        },
         {
           "name": "Login",
           "event": [
