@@ -25,7 +25,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<UserDto> register(@Valid @RequestBody RegisterRequest request) {
-        if (userRepository.findByUsername(request.getUsername()) != null) {
+        if (userRepository.findByUsername(request.getUsername()).isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
         User user = new User();
@@ -37,12 +37,10 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
-        User user = userRepository.findByUsername(request.getUsername());
-        if (user == null || !passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-        String token = jwtService.generateToken(user);
-        return ResponseEntity.ok(new AuthResponse(token));
+        return userRepository.findByUsername(request.getUsername())
+                .filter(user -> passwordEncoder.matches(request.getPassword(), user.getPassword()))
+                .map(user -> ResponseEntity.ok(new AuthResponse(jwtService.generateToken(user))))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
     }
 
     @GetMapping("/me")
