@@ -5,10 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-/**
- * Enables CORS for browser-based clients. In a real deployment the allowed
- * origins should be restricted via configuration.
- */
 @Configuration
 public class CorsConfig {
 

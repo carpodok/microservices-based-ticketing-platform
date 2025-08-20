@@ -19,12 +19,6 @@ public class JwtService {
     @Value("${jwt.secret}")
     private String secret;
 
-    /**
-     * Parses the provided JWT token and returns the claims if valid.
-     *
-     * @param token raw JWT token without the Bearer prefix
-     * @return the claims contained in the token
-     */
     public Claims parse(String token) {
         return Jwts
                 .parser()

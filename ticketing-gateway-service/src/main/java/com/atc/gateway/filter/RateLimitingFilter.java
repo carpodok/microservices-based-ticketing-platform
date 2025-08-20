@@ -12,11 +12,6 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Extremely simple in-memory rate limiting filter. It is meant only for demo
- * purposes and should be replaced with a distributed solution such as Redis in
- * production deployments.
- */
 @Component
 public class RateLimitingFilter extends OncePerRequestFilter {
 
