@@ -1,4 +1,4 @@
-package com.atc.auth.web;
+package com.atc.auth.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

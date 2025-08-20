@@ -1,4 +1,6 @@
-package com.atc.auth.user;
+package com.atc.auth.repository;
+
+import com.atc.auth.entity.User;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

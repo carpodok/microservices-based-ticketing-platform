@@ -1,6 +1,4 @@
-package com.atc.auth.config;
-
-import com.atc.auth.jwt.JwtAuthenticationFilter;
+package com.atc.auth.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

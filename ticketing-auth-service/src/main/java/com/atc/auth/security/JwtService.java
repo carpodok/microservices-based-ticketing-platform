@@ -1,6 +1,6 @@
-package com.atc.auth.jwt;
+package com.atc.auth.security;
 
-import com.atc.auth.user.User;
+import com.atc.auth.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;

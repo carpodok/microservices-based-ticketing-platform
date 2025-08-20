@@ -1,7 +1,7 @@
-package com.atc.auth.jwt;
+package com.atc.auth.security;
 
-import com.atc.auth.user.User;
-import com.atc.auth.user.UserRepository;
+import com.atc.auth.entity.User;
+import com.atc.auth.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
