@@ -1,4 +1,4 @@
-package com.atc.auth.user;
+package com.atc.auth.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
