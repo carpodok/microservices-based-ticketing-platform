@@ -11,6 +11,8 @@ import com.atc.auth.security.JwtService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class AuthService {
     private final UserRepository userRepository;
@@ -37,10 +39,9 @@ public class AuthService {
     }
 
     public AuthResponse login(LoginRequest request) {
-        return userRepository.findByUsername(request.getUsername())
-                .filter(user -> passwordEncoder.matches(request.getPassword(), user.getPassword()))
-                .map(user -> new AuthResponse(jwtService.generateToken(user)))
-                .orElse(null);
+        Optional<User> user = userRepository.findByUsername(request.getUsername());
+
+        return user.map(value -> new AuthResponse(jwtService.generateToken(value))).orElse(null);
     }
 
     public UserDto me(User user) {
