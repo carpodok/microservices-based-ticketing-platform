@@ -1,6 +1,19 @@
-# Microservices-based Ticketing Platform
+# 🎟️ Microservices-based Ticketing Platform
+
+![Java](https://img.shields.io/badge/Java-21-ED8B00?logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2-6DB33F?logo=springboot&logoColor=white)
+![Maven](https://img.shields.io/badge/Maven-3.9.6-C71A36?logo=apache-maven&logoColor=white)
+![gRPC](https://img.shields.io/badge/gRPC-Enabled-4A154B?logo=grpc&logoColor=white)
+![Swagger](https://img.shields.io/badge/Swagger-API%20Docs-85EA2D?logo=swagger&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-336791?logo=postgresql&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Enabled-2496ED?logo=docker&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-Auth%20Tokens-ffffff?logo=jsonwebtokens&logoColor=white)
+
+
+
 
 A sample ticketing system demonstrating microservice architecture with Spring Boot and gRPC.
+
 
 ## Architecture
 
@@ -115,3 +128,9 @@ Configure the secret via the `JWT_SECRET` environment variable or the `jwt.secre
 1. Provide a new value for `JWT_SECRET` and redeploy all services so they can validate tokens signed with the new secret.
 2. Restart the auth service last to begin issuing tokens with the new secret.
 3. After previously issued tokens expire, remove the old secret value from your configuration.
+
+
+## License
+
+This project is licensed under the MIT License.  
+
