@@ -5,14 +5,14 @@
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
-    { "key": "gateway_base_url", "value": "http://localhost:8080/api", "type": "string" },
+    { "key": "BASE_URL", "value": "http://localhost:8080/api", "type": "string" },
     { "key": "jwt_token", "value": "", "type": "string" }
   ],
   "item": [
     {
       "name": "Auth",
       "item": [
-                {
+        {
           "name": "Register",
           "request": {
             "method": "POST",
@@ -24,8 +24,8 @@
               "raw": "{\\n  \\\"username\\\": \\\"newuser\\\",\\n  \\\"password\\\": \\\"password\\\"\\n}"
             },
             "url": {
-              "raw": "{{gateway_base_url}}/auth/register",
-              "host": ["{{gateway_base_url}}"],
+              "raw": "{{BASE_URL}}/auth/register",
+              "host": ["{{BASE_URL}}"],
               "path": ["auth","register"]
             }
           }
@@ -53,8 +53,8 @@
               "raw": "{\n  \"username\": \"user\",\n  \"password\": \"password\"\n}"
             },
             "url": {
-              "raw": "{{gateway_base_url}}/auth/login",
-              "host": ["{{gateway_base_url}}"],
+              "raw": "{{BASE_URL}}/auth/login",
+              "host": ["{{BASE_URL}}"],
               "path": ["auth","login"]
             }
           }
@@ -67,8 +67,8 @@
               { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
             ],
             "url": {
-              "raw": "{{gateway_base_url}}/auth/me",
-              "host": ["{{gateway_base_url}}"],
+              "raw": "{{BASE_URL}}/auth/me",
+              "host": ["{{BASE_URL}}"],
               "path": ["auth","me"]
             }
           }
@@ -86,8 +86,8 @@
               { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
             ],
             "url": {
-              "raw": "{{gateway_base_url}}/catalog/events",
-              "host": ["{{gateway_base_url}}"],
+              "raw": "{{BASE_URL}}/catalog/events",
+              "host": ["{{BASE_URL}}"],
               "path": ["catalog","events"],
               "query": [
                 {"key": "city", "value": ""},
@@ -107,8 +107,8 @@
               { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
             ],
             "url": {
-              "raw": "{{gateway_base_url}}/catalog/events/1",
-              "host": ["{{gateway_base_url}}"],
+              "raw": "{{BASE_URL}}/catalog/events/1",
+              "host": ["{{BASE_URL}}"],
               "path": ["catalog","events","1"]
             }
           }
@@ -121,8 +121,8 @@
               { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
             ],
             "url": {
-              "raw": "{{gateway_base_url}}/catalog/venues",
-              "host": ["{{gateway_base_url}}"],
+              "raw": "{{BASE_URL}}/catalog/venues",
+              "host": ["{{BASE_URL}}"],
               "path": ["catalog","venues"]
             }
           }
@@ -135,8 +135,8 @@
               { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
             ],
             "url": {
-              "raw": "{{gateway_base_url}}/catalog/venues/1/halls",
-              "host": ["{{gateway_base_url}}"],
+              "raw": "{{BASE_URL}}/catalog/venues/1/halls",
+              "host": ["{{BASE_URL}}"],
               "path": ["catalog","venues","1","halls"]
             }
           }
@@ -154,8 +154,8 @@
               { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
             ],
             "url": {
-              "raw": "{{gateway_base_url}}/inventory/seats?eventId=1",
-              "host": ["{{gateway_base_url}}"],
+              "raw": "{{BASE_URL}}/inventory/seats?eventId=1",
+              "host": ["{{BASE_URL}}"],
               "path": ["inventory","seats"],
               "query": [ {"key": "eventId", "value": "1"} ]
             }
@@ -174,8 +174,8 @@
               "raw": "{\n  \"eventId\": 1,\n  \"seatLabels\": [\"A1\", \"A2\"],\n  \"lockDurationSeconds\": 300,\n  \"bookingRef\": \"BOOK123\",\n  \"lockedByUser\": 1\n}"
             },
             "url": {
-              "raw": "{{gateway_base_url}}/inventory/seats/lock",
-              "host": ["{{gateway_base_url}}"],
+              "raw": "{{BASE_URL}}/inventory/seats/lock",
+              "host": ["{{BASE_URL}}"],
               "path": ["inventory","seats","lock"]
             }
           }
@@ -193,8 +193,8 @@
               "raw": "{\n  \"eventId\": 1,\n  \"seatLabels\": [\"A1\", \"A2\"]\n}"
             },
             "url": {
-              "raw": "{{gateway_base_url}}/inventory/seats/release",
-              "host": ["{{gateway_base_url}}"],
+              "raw": "{{BASE_URL}}/inventory/seats/release",
+              "host": ["{{BASE_URL}}"],
               "path": ["inventory","seats","release"]
             }
           }
@@ -212,8 +212,8 @@
               "raw": "{\n  \"eventId\": 1,\n  \"seatLabels\": [\"A1\", \"A2\"]\n}"
             },
             "url": {
-              "raw": "{{gateway_base_url}}/inventory/seats/sell",
-              "host": ["{{gateway_base_url}}"],
+              "raw": "{{BASE_URL}}/inventory/seats/sell",
+              "host": ["{{BASE_URL}}"],
               "path": ["inventory","seats","sell"]
             }
           }
@@ -236,8 +236,8 @@
               "raw": "{\n  \"userId\": 1,\n  \"eventId\": 1,\n  \"currency\": \"USD\",\n  \"items\": [\n    {\n      \"seatLabel\": \"A1\",\n      \"tierId\": 1,\n      \"priceAtBooking\": 100.0\n    }\n  ]\n}"
             },
             "url": {
-              "raw": "{{gateway_base_url}}/booking",
-              "host": ["{{gateway_base_url}}"],
+              "raw": "{{BASE_URL}}/booking",
+              "host": ["{{BASE_URL}}"],
               "path": ["booking"]
             }
           }
@@ -250,8 +250,8 @@
               { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
             ],
             "url": {
-              "raw": "{{gateway_base_url}}/booking/1/confirm",
-              "host": ["{{gateway_base_url}}"],
+              "raw": "{{BASE_URL}}/booking/1/confirm",
+              "host": ["{{BASE_URL}}"],
               "path": ["booking","1","confirm"]
             }
           }
@@ -264,8 +264,8 @@
               { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
             ],
             "url": {
-              "raw": "{{gateway_base_url}}/booking/1/cancel",
-              "host": ["{{gateway_base_url}}"],
+              "raw": "{{BASE_URL}}/booking/1/cancel",
+              "host": ["{{BASE_URL}}"],
               "path": ["booking","1","cancel"]
             }
           }
