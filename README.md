@@ -11,10 +11,10 @@ graph TD
     Gateway -->|REST| Catalog[Catalog Service]
     Gateway -->|REST| Booking[Booking Service]
     Booking <-->|gRPC| Inventory[Inventory Service]
-    Auth -->|JPA| AuthDB[(PostgreSQL)]
-    Catalog -->|JPA| CatalogDB[(PostgreSQL)]
-    Inventory -->|JPA| InventoryDB[(PostgreSQL)]
-    Booking -->|JPA| BookingDB[(PostgreSQL)]
+    Auth -->|JPA| AuthDB[(Auth DB)]
+    Catalog -->|JPA| CatalogDB[(Catalog DB)]
+    Inventory -->|JPA| InventoryDB[(Inventory DB)]
+    Booking -->|JPA| BookingDB[(Booking DB)]
 ```
 
 - Each service's data is isolated in its own PostgreSQL database (`auth`, `catalog`, `inventory`, `booking`).
