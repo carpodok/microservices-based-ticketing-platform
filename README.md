@@ -1,59 +1,113 @@
 # Microservices-based Ticketing Platform
 
-This project demonstrates a ticketing system built with Spring Boot microservices and gRPC. Each service runs independently and communicates through REST or gRPC calls.
+A sample ticketing system demonstrating microservice architecture with Spring Boot and gRPC.
 
-## Architecture & Workflow
-- **Gateway service** routes `/api/catalog/**`, `/api/inventory/**`, and `/api/booking/**` to the respective services.
-- **Auth service** registers users and issues JWT tokens for authentication.
-- **Catalog service** stores events, venues, halls, and price tiers.
-- **Inventory service** manages event seats and supports listing, locking, releasing, and selling seats.
-- **Booking service** orchestrates bookings and calls the inventory service over gRPC to lock or finalize seats.
-- **Shared library** provides protobuf definitions for seat locking and booking summaries.
+## Architecture
 
-### Responsibility split
+```mermaid
+graph TD
+    Client -->|HTTP| Gateway[API Gateway]
+    Gateway -->|JWT Auth| Auth[Auth Service]
+    Gateway -->|REST| Catalog[Catalog Service]
+    Gateway -->|REST| Booking[Booking Service]
+    Booking -->|gRPC| Inventory[Inventory Service]
+    Auth -->|JPA| AuthDB[(PostgreSQL)]
+    Catalog -->|JPA| CatalogDB[(PostgreSQL)]
+    Inventory -->|JPA| InventoryDB[(PostgreSQL)]
+    Booking -->|JPA| BookingDB[(PostgreSQL)]
+```
 
-**Gateway**
-- Authenticate requests (validate JWTs, sessions, or API keys).
-- Perform coarse authorization (e.g., block anonymous users from `/api/**`).
-- Relay the caller's token to downstream services.
-- Apply simple rate limiting and request size limits.
-- Terminate TLS and handle CORS for browser clients.
-- Add observability data such as request IDs and metrics.
-- Provide basic resilience via timeouts and retries while keeping routing thin.
+Each service runs independently on its own port and persists data in its own database:
 
-**Microservices**
-- Re-validate JWTs received from the gateway using the same signing keys.
-- Enforce fine-grained authorization rules (e.g., "only owners can update bookings").
-- Validate input and encode output safely.
-- Authenticate when calling other services (mTLS or service credentials).
+| Service | Port | Description |
+|---------|------|-------------|
+| Gateway | 8080 | Routes external requests and performs coarse-grained auth |
+| Catalog | 8081 | Events, venues and price tiers |
+| Inventory | 8082 (gRPC 9090) | Seat availability and locking |
+| Booking | 8083 | Orchestrates booking workflow |
+| Auth | 8084 | User registration and token issuance |
 
-Typical flow:
-1. Client calls the gateway to retrieve catalog data.
-2. Booking service starts a booking and asks inventory to lock seats.
-3. Payment confirmation leads to selling seats; cancellation releases the locks.
+Each service's data is isolated in its own PostgreSQL database (`auth`, `catalog`, `inventory`, `booking`).
 
-## Running locally
-1. **Prerequisites**: JDK 21, Maven, Docker.
-2. **Clone**: `git clone <repo-url>`
-3. **Build shared library**:
+The `ticketing-shared-lib` module holds protobuf definitions used by inventory and booking.
+
+## Request workflow
+
+1. **Authenticate**  
+   Users register and log in via the Auth Service to obtain a JWT.
+2. **Browse catalog**  
+   Clients call the Gateway which forwards requests to the Catalog Service for events and seating info.
+3. **Start a booking**  
+   The Booking Service initiates a booking through the Gateway and asks the Inventory Service (via gRPC) to lock seats.
+4. **Confirm or cancel**  
+   After payment confirmation the Booking Service finalizes the order and tells Inventory to sell seats. Cancellation releases the locks.
+
+## Repository structure
+
+```
+├─ ticketing-auth-service       # JWT issuance and user management
+├─ ticketing-catalog-service    # Event and venue data
+├─ ticketing-inventory-service  # Seat management exposed over gRPC
+├─ ticketing-booking-service    # Booking orchestration
+├─ ticketing-gateway-service    # API gateway / edge service
+├─ ticketing-shared-lib         # Protobuf definitions shared across services
+└─ ticketing-platform.postman_collection.json  # Example API requests
+```
+
+## Run locally
+
+### Prerequisites
+
+- JDK 21
+- Maven
+- Docker (for PostgreSQL)
+- `JWT_SECRET` environment variable (same for all services)
+
+### Steps
+
+1. **Clone the repository**
+
+   ```bash
+   git clone <repo-url>
+   cd microservices-based-ticketing-platform
+   ```
+
+2. **Build shared protobuf library**
+
    ```bash
    cd ticketing-shared-lib
    ./mvnw install
+   cd ..
    ```
-4. **Start PostgreSQL** (one container for all DBs):
+
+3. **Start PostgreSQL instances**
+
+   Each service connects to its own database:
+
    ```bash
-   docker run --name ticketing-postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres
+   docker run --name auth-postgres -e POSTGRES_DB=auth -e POSTGRES_PASSWORD=postgres -p 5433:5432 -d postgres
+   docker run --name catalog-postgres -e POSTGRES_DB=catalog -e POSTGRES_PASSWORD=postgres -p 5434:5432 -d postgres
+   docker run --name inventory-postgres -e POSTGRES_DB=inventory -e POSTGRES_PASSWORD=postgres -p 5435:5432 -d postgres
+   docker run --name booking-postgres -e POSTGRES_DB=booking -e POSTGRES_PASSWORD=postgres -p 5436:5432 -d postgres
    ```
-   Create databases `catalog`, `inventory`, and `booking` inside this instance.
-5. **Run services** (each in its own terminal):
+
+   Adjust the JDBC URLs in each service if you change ports or container names.
+
+4. **Run each service** (in separate terminals)
+
    ```bash
+   export JWT_SECRET=supersecret
    cd ticketing-catalog-service && ./mvnw spring-boot:run
    cd ticketing-inventory-service && ./mvnw spring-boot:run
    cd ticketing-booking-service && ./mvnw spring-boot:run
    cd ticketing-auth-service && ./mvnw spring-boot:run
    cd ticketing-gateway-service && ./mvnw spring-boot:run
    ```
-6. **Access via gateway**: `http://localhost:8080/api/...`
+
+5. **Use the platform**
+
+   Access APIs through the gateway at `http://localhost:8080/api/...`  
+   A Postman collection `ticketing-platform.postman_collection.json` is provided for example requests.
 
 ## JWT Secret Configuration
 
@@ -66,5 +120,3 @@ Configure the secret via the `JWT_SECRET` environment variable or the `jwt.secre
 1. Provide a new value for `JWT_SECRET` and redeploy all services so they can validate tokens signed with the new secret.
 2. Restart the auth service last to begin issuing tokens with the new secret.
 3. After previously issued tokens expire, remove the old secret value from your configuration.
-
-
