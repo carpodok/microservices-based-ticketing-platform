@@ -10,12 +10,14 @@ graph TD
     Gateway -->|JWT Auth| Auth[Auth Service]
     Gateway -->|REST| Catalog[Catalog Service]
     Gateway -->|REST| Booking[Booking Service]
-    Booking -->|gRPC| Inventory[Inventory Service]
-    Auth -->|JPA| Postgres[(PostgreSQL)]
-    Catalog -->|JPA| Postgres
-    Inventory -->|JPA| Postgres
-    Booking -->|JPA| Postgres
+    Booking <-->|gRPC| Inventory[Inventory Service]
+    Auth -->|JPA| AuthDB[(PostgreSQL)]
+    Catalog -->|JPA| CatalogDB[(PostgreSQL)]
+    Inventory -->|JPA| InventoryDB[(PostgreSQL)]
+    Booking -->|JPA| BookingDB[(PostgreSQL)]
 ```
+
+- Each service's data is isolated in its own PostgreSQL database (`auth`, `catalog`, `inventory`, `booking`).
 
 Each service runs independently on its own port:
 
@@ -27,7 +29,7 @@ Each service runs independently on its own port:
 | Booking | 8083 | Orchestrates booking workflow |
 | Auth | 8084 | User registration and token issuance |
 
-The `ticketing-shared-lib` module holds protobuf definitions used by inventory and booking.
+- The `ticketing-shared-lib` module holds protobuf definitions used by inventory and booking.
 
 ## Request workflow
 
