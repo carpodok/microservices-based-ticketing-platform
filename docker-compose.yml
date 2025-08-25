@@ -17,7 +17,7 @@ services:
       context: .
       dockerfile: ticketing-auth-service/Dockerfile
     environment:
-      JWT_SECRET: ${JWT_SECRET:-changeme}
+      JWT_SECRET: ${JWT_SECRET:-GRNg1EBz4AU0yVJAp7RuHrlYgvF8OGf0tKRYWHI2JWM=}
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/auth
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
@@ -31,7 +31,7 @@ services:
       context: .
       dockerfile: ticketing-catalog-service/Dockerfile
     environment:
-      JWT_SECRET: ${JWT_SECRET:-changeme}
+      JWT_SECRET: ${JWT_SECRET:-GRNg1EBz4AU0yVJAp7RuHrlYgvF8OGf0tKRYWHI2JWM=}
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/catalog
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
@@ -45,7 +45,7 @@ services:
       context: .
       dockerfile: ticketing-inventory-service/Dockerfile
     environment:
-      JWT_SECRET: ${JWT_SECRET:-changeme}
+      JWT_SECRET: ${JWT_SECRET:-GRNg1EBz4AU0yVJAp7RuHrlYgvF8OGf0tKRYWHI2JWM=}
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/inventory
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
@@ -60,7 +60,7 @@ services:
       context: .
       dockerfile: ticketing-booking-service/Dockerfile
     environment:
-      JWT_SECRET: ${JWT_SECRET:-changeme}
+      JWT_SECRET: ${JWT_SECRET:-GRNg1EBz4AU0yVJAp7RuHrlYgvF8OGf0tKRYWHI2JWM=}
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/booking
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
@@ -75,7 +75,7 @@ services:
       context: .
       dockerfile: ticketing-gateway-service/Dockerfile
     environment:
-      JWT_SECRET: ${JWT_SECRET:-changeme}
+      JWT_SECRET: ${JWT_SECRET:-GRNg1EBz4AU0yVJAp7RuHrlYgvF8OGf0tKRYWHI2JWM=}
       SPRING_CLOUD_GATEWAY_SERVER_WEBMVC_ROUTES_0_URI: http://catalog:8081
       SPRING_CLOUD_GATEWAY_SERVER_WEBMVC_ROUTES_1_URI: http://inventory:8082
       SPRING_CLOUD_GATEWAY_SERVER_WEBMVC_ROUTES_2_URI: http://booking:8083
