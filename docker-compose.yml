@@ -1,0 +1,92 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  auth:
+    build:
+      context: .
+      dockerfile: ticketing-auth-service/Dockerfile
+    environment:
+      JWT_SECRET: ${JWT_SECRET:-changeme}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/auth
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    depends_on:
+      - postgres
+    ports:
+      - "8084:8084"
+
+  catalog:
+    build:
+      context: .
+      dockerfile: ticketing-catalog-service/Dockerfile
+    environment:
+      JWT_SECRET: ${JWT_SECRET:-changeme}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/catalog
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    depends_on:
+      - postgres
+    ports:
+      - "8081:8081"
+
+  inventory:
+    build:
+      context: .
+      dockerfile: ticketing-inventory-service/Dockerfile
+    environment:
+      JWT_SECRET: ${JWT_SECRET:-changeme}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/inventory
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    depends_on:
+      - postgres
+    ports:
+      - "8082:8082"
+      - "9090:9090"
+
+  booking:
+    build:
+      context: .
+      dockerfile: ticketing-booking-service/Dockerfile
+    environment:
+      JWT_SECRET: ${JWT_SECRET:-changeme}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/booking
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    depends_on:
+      - postgres
+      - inventory
+    ports:
+      - "8083:8083"
+
+  gateway:
+    build:
+      context: .
+      dockerfile: ticketing-gateway-service/Dockerfile
+    environment:
+      JWT_SECRET: ${JWT_SECRET:-changeme}
+      SPRING_CLOUD_GATEWAY_SERVER_WEBMVC_ROUTES_0_URI: http://catalog:8081
+      SPRING_CLOUD_GATEWAY_SERVER_WEBMVC_ROUTES_1_URI: http://inventory:8082
+      SPRING_CLOUD_GATEWAY_SERVER_WEBMVC_ROUTES_2_URI: http://booking:8083
+      SPRING_CLOUD_GATEWAY_SERVER_WEBMVC_ROUTES_3_URI: http://auth:8084
+    depends_on:
+      - auth
+      - catalog
+      - booking
+      - inventory
+    ports:
+      - "8080:8080"
+
+volumes:
+  postgres-data:

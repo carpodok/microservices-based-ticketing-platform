@@ -67,6 +67,16 @@ Each service runs independently on its own port:
 └─ ticketing-platform.postman_collection.json  # Example API requests
 ```
 
+## Run with Docker Compose
+
+To build and start all services along with PostgreSQL, ensure Docker is running and execute:
+
+```bash
+docker compose up --build
+```
+
+The stack exposes the gateway at http://localhost:8080.
+
 ## Run locally
 
 ### Prerequisites
