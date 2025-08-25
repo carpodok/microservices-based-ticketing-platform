@@ -4,11 +4,11 @@ WORKDIR /workspace
 
 # Build shared protobuf library
 COPY ticketing-shared-lib ./ticketing-shared-lib
-RUN cd ticketing-shared-lib && ./mvnw install -DskipTests
+RUN cd ticketing-shared-lib && chmod +x mvnw && ./mvnw install -DskipTests
 
 # Build auth service
 COPY ticketing-auth-service ./ticketing-auth-service
-RUN cd ticketing-auth-service && ./mvnw package -DskipTests
+RUN cd ticketing-auth-service && chmod +x mvnw && ./mvnw package -DskipTests
 
 # Runtime stage
 FROM eclipse-temurin:21-jre
